@@ -47,7 +47,7 @@
     cell.reviewsCountLabel.text = [NSString stringWithFormat:@"%@ Reviews", business.reviewCount];
     cell.distanceLabel.text = business.distance;
     
-    [cell.ratingImageView setImageWithURL:business.ratingImageUrl   ];
+    [cell.ratingImageView setImageWithURL:business.ratingImageUrl];
     [cell.photoImageView setImageWithURL:business.imageUrl];
     
     return cell;
@@ -68,11 +68,17 @@
     [self search:searchText];
 }
 
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [self search:searchBar.text];
+    [self.view endEditing:YES];
+}
+
 - (void)setUpTable {
     [self.searchResultsTableView registerNib:[UINib nibWithNibName:@"SearchResultCell" bundle:nil] forCellReuseIdentifier:@"searchResultCell"];
     self.searchResultsTableView.dataSource = self;
     self.searchResultsTableView.delegate = self;
     self.searchResultsTableView.estimatedRowHeight = 128;
+    self.searchResultsTableView.rowHeight = UITableViewAutomaticDimension;
 }
 
 - (void)didReceiveMemoryWarning {

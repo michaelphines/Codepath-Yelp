@@ -15,20 +15,14 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="114"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Company Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cbp-2F-pK7">
-                        <rect key="frame" x="112" y="8" width="114" height="18"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Company Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="100" translatesAutoresizingMaskIntoConstraints="NO" id="cbp-2F-pK7">
+                        <rect key="frame" x="112" y="8" width="139" height="18"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZWp-Bw-w5b">
-                        <rect key="frame" x="112" y="58" width="52" height="16"/>
-                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ib-aO-VvX">
-                        <rect key="frame" x="259" y="8" width="53" height="16"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="100" translatesAutoresizingMaskIntoConstraints="NO" id="0Ib-aO-VvX">
+                        <rect key="frame" x="259" y="10" width="53" height="16"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
@@ -64,18 +58,27 @@
                             <constraint firstAttribute="height" constant="16" id="l7J-4Y-JfP"/>
                         </constraints>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZWp-Bw-w5b">
+                        <rect key="frame" x="112" y="58" width="52" height="16"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="gRZ-ct-2wo" firstAttribute="leading" secondItem="D7l-8t-FCP" secondAttribute="trailing" constant="8" id="0ao-Ut-FAN"/>
-                    <constraint firstItem="0Ib-aO-VvX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cbp-2F-pK7" secondAttribute="trailing" constant="8" id="AnP-ta-ysn"/>
+                    <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="ZWp-Bw-w5b" secondAttribute="trailing" constant="8" id="6ln-Jz-6Lx"/>
+                    <constraint firstItem="0Ib-aO-VvX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cbp-2F-pK7" secondAttribute="trailing" priority="250" constant="8" id="AnP-ta-ysn"/>
                     <constraint firstAttribute="bottomMargin" secondItem="D7l-8t-FCP" secondAttribute="bottom" id="CWi-hP-y0X"/>
                     <constraint firstItem="D7l-8t-FCP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="HdF-VS-GLV"/>
+                    <constraint firstItem="0Ib-aO-VvX" firstAttribute="leading" secondItem="cbp-2F-pK7" secondAttribute="trailing" constant="8" id="M1h-OL-5xN"/>
                     <constraint firstItem="D7l-8t-FCP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="OMH-4X-FlW"/>
                     <constraint firstItem="gRZ-ct-2wo" firstAttribute="top" secondItem="cbp-2F-pK7" secondAttribute="bottom" constant="8" id="OkB-Af-SMh"/>
                     <constraint firstItem="D7l-8t-FCP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="Pl0-wb-QuM"/>
+                    <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="5jf-PC-akS" secondAttribute="trailing" constant="8" id="QWw-CN-XGq"/>
                     <constraint firstItem="5jf-PC-akS" firstAttribute="leading" secondItem="D7l-8t-FCP" secondAttribute="trailing" constant="8" id="U2f-QW-f7d"/>
                     <constraint firstItem="ZWp-Bw-w5b" firstAttribute="leading" secondItem="D7l-8t-FCP" secondAttribute="trailing" constant="8" id="afZ-jS-l6D"/>
-                    <constraint firstItem="0Ib-aO-VvX" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="crL-ME-1O0"/>
+                    <constraint firstItem="0Ib-aO-VvX" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="2" id="crL-ME-1O0"/>
                     <constraint firstItem="ZWp-Bw-w5b" firstAttribute="top" secondItem="kZG-ny-uCl" secondAttribute="bottom" constant="8" id="dZD-wW-qaP"/>
                     <constraint firstItem="D7l-8t-FCP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="fAL-GE-UDF"/>
                     <constraint firstItem="cbp-2F-pK7" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="fLF-qu-L18"/>
@@ -86,6 +89,11 @@
                     <constraint firstItem="0Ib-aO-VvX" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="mmJ-du-BDs"/>
                     <constraint firstItem="ZWp-Bw-w5b" firstAttribute="top" secondItem="gRZ-ct-2wo" secondAttribute="bottom" constant="8" id="vzf-Ik-ihs"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="AnP-ta-ysn"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="addressLabel" destination="ZWp-Bw-w5b" id="fGU-Kz-cbu"/>
