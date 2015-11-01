@@ -10,11 +10,18 @@
 #import "YelpBusiness.h"
 #import "SearchResultCell.h"
 #import "UIImageView+AFNetworking.h"
+#import "FiltersViewController.h"
+#import "SVProgressHud.h"
 
-@interface MainViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
+@interface MainViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, FiltersViewControllerDelegate>
 
+@property (strong, nonatomic) NSString *searchText;
+@property (strong, nonatomic) NSArray *categoryFilters;
 @property (strong, nonatomic) NSArray *businesses;
 @property (weak, nonatomic) IBOutlet UITableView *searchResultsTableView;
+@property (strong, nonatomic) NSString *nextSearch;
+@property BOOL searchInProgress;
+@property BOOL searchAgain;
 
 @end
 
@@ -22,20 +29,34 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.searchText = @"";
+    self.categoryFilters = @[];
     [self setUpTable];
-    [self setUpSearchBar];
-    [self search:@""];
+    [self setUpNavigation];
+    [self search];
 }
 
-- (void)search:(NSString *)searchString {
-    [YelpBusiness searchWithTerm:searchString
-                        sortMode:YelpSortModeBestMatched
-                      categories:@[]
-                           deals:NO
-                      completion:^(NSArray *businesses, NSError *error) {
-                          self.businesses = businesses;
-                          [self.searchResultsTableView reloadData];
-                      }];
+- (void)search {
+    if (self.searchInProgress) {
+        self.searchAgain = YES;
+    } else {
+        self.searchInProgress = YES;
+        [SVProgressHUD show];
+        [YelpBusiness searchWithTerm:self.searchText
+                            sortMode:YelpSortModeBestMatched
+                          categories:self.categoryFilters
+                               deals:NO
+                          completion:^(NSArray *businesses, NSError *error) {
+                              [SVProgressHUD dismiss];
+                              self.businesses = businesses;
+                              [self.searchResultsTableView reloadData];
+                              self.searchInProgress = NO;
+                              if (self.searchAgain) {
+                                  self.searchAgain = NO;
+                                  [self search];
+                              }
+                          }];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -56,21 +77,47 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.businesses.count;
 }
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    self.searchText = searchBar.text;
+    [self search];
+}
 
-- (void) setUpSearchBar {
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
+    [searchBar setShowsCancelButton:NO animated:YES];
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:YES animated:YES];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+    [searchBar setShowsCancelButton:NO animated:YES];
+}
+
+- (void) setUpNavigation {
     UISearchBar *searchBar = [UISearchBar new];
     searchBar.delegate = self;
     [searchBar sizeToFit];
     self.navigationItem.titleView = searchBar;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filters" style:UIBarButtonItemStylePlain target:self action:@selector(onFiltersTap)];
 }
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    [self search:searchText];
+- (void)filtersViewController:(FiltersViewController *)filtersViewController didUpdateFilters:(NSArray *)filters {
+    self.categoryFilters = filters;
+    [self search];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [self search:searchBar.text];
-    [self.view endEditing:YES];
+- (void) onFiltersTap {
+    FiltersViewController *vc = [[FiltersViewController alloc] initWithNibName:@"FiltersViewController" bundle:nil];
+    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+    
+    vc.delegate = self;
+    
+    [self presentViewController:nvc animated:YES completion:nil];
 }
 
 - (void)setUpTable {
