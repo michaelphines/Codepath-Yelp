@@ -11,7 +11,7 @@
 #import "SearchResultCell.h"
 #import "UIImageView+AFNetworking.h"
 
-@interface MainViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface MainViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 
 @property (strong, nonatomic) NSArray *businesses;
 @property (weak, nonatomic) IBOutlet UITableView *searchResultsTableView;
@@ -23,17 +23,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setUpTable];
-    
-    [YelpBusiness searchWithTerm:@"Restaurants"
+    [self setUpSearchBar];
+    [self search:@""];
+}
+
+- (void)search:(NSString *)searchString {
+    [YelpBusiness searchWithTerm:searchString
                         sortMode:YelpSortModeBestMatched
-                      categories:@[@"burgers"]
+                      categories:@[]
                            deals:NO
                       completion:^(NSArray *businesses, NSError *error) {
                           self.businesses = businesses;
                           [self.searchResultsTableView reloadData];
-                          for (YelpBusiness *business in businesses) {
-                              NSLog(@"%@", business);
-                          }
                       }];
 }
 
@@ -56,7 +57,18 @@
     return self.businesses.count;
 }
 
-- (void) setUpTable {
+- (void) setUpSearchBar {
+    UISearchBar *searchBar = [UISearchBar new];
+    searchBar.delegate = self;
+    [searchBar sizeToFit];
+    self.navigationItem.titleView = searchBar;
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    [self search:searchText];
+}
+
+- (void)setUpTable {
     [self.searchResultsTableView registerNib:[UINib nibWithNibName:@"SearchResultCell" bundle:nil] forCellReuseIdentifier:@"searchResultCell"];
     self.searchResultsTableView.dataSource = self;
     self.searchResultsTableView.delegate = self;
