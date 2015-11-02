@@ -48,16 +48,8 @@
 }
 
 - (void)onApplyTap {
-    [self.delegate filtersViewController:self didUpdateFilters:[self filters] sortMode:self.sortMode radius:self.radius deals:self.deals];
+    [self.delegate filtersViewController:self didUpdateFilters:self.selectedCategories sortMode:self.sortMode radius:self.radius deals:self.deals];
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (NSArray *)filters {
-    NSMutableArray *selectedCategoriesArray = [[NSMutableArray alloc] init];
-    for (NSDictionary *category in self.selectedCategories) {
-        [selectedCategoriesArray addObject:category[@"code"]];
-    }
-    return selectedCategoriesArray;
 }
 
 - (void)onCancelTap {
@@ -67,6 +59,13 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)loadFilters:(NSSet *)filters sortMode:(NSNumber *)sortMode radius:(NSNumber *)radius deals:(BOOL)deals {
+    self.selectedCategories = [filters mutableCopy];
+    self.sortMode = sortMode;
+    self.radius = radius;
+    self.deals = deals;
 }
 
 - (void)setUpTableView {

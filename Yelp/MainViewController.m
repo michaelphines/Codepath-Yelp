@@ -18,7 +18,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *searchResultsTableView;
 
 @property (strong, nonatomic) NSString *searchText;
-@property (strong, nonatomic) NSArray *categoryFilters;
+@property (strong, nonatomic) NSSet *categoryFilters;
 @property (strong, nonatomic) NSArray *businesses;
 @property (strong, nonatomic) NSString *nextSearch;
 @property (strong, nonatomic) NSNumber *radius;
@@ -35,7 +35,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.searchText = @"";
-    self.categoryFilters = @[];
+    self.categoryFilters = [NSSet set];
     self.radius = nil;
     self.sortMode = YelpSortModeBestMatched;
     self.deals = NO;
@@ -118,7 +118,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filters" style:UIBarButtonItemStylePlain target:self action:@selector(onFiltersTap)];
 }
 
-- (void)filtersViewController:(FiltersViewController *)filtersViewController didUpdateFilters:(NSArray *)filters sortMode:(NSNumber *)sortMode radius:(NSNumber *)radius deals:(BOOL)deals{
+- (void)filtersViewController:(FiltersViewController *)filtersViewController didUpdateFilters:(NSSet *)filters sortMode:(NSNumber *)sortMode radius:(NSNumber *)radius deals:(BOOL)deals{
     self.categoryFilters = filters;
     self.sortMode = sortMode;
     self.radius = radius;
@@ -131,6 +131,7 @@
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
     
     vc.delegate = self;
+    [vc loadFilters:self.categoryFilters sortMode:self.sortMode radius:self.radius deals:self.deals];
     
     [self presentViewController:nvc animated:YES completion:nil];
 }

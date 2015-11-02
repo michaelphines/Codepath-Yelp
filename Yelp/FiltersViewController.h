@@ -13,12 +13,13 @@
 
 @protocol FiltersViewControllerDelegate <NSObject>
 
-- (void)filtersViewController:(FiltersViewController *)filtersViewController didUpdateFilters:(NSArray *)filters sortMode:(NSNumber *)sortMode radius:(NSNumber *)radius deals:(BOOL)deals;
+- (void)filtersViewController:(FiltersViewController *)filtersViewController didUpdateFilters:(NSSet *)filters sortMode:(NSNumber *)sortMode radius:(NSNumber *)radius deals:(BOOL)deals;
 
 @end
 
 @interface FiltersViewController : UIViewController
 
 @property (strong, nonatomic) id<FiltersViewControllerDelegate> delegate;
+- (void)loadFilters:(NSSet *)filters sortMode:(NSNumber *)sortMode radius:(NSNumber *)radius deals:(BOOL)deals;
 
 @end

@@ -28,7 +28,7 @@
 
 + (void)searchWithTerm:(NSString *)term
               sortMode:(YelpSortMode)sortMode
-            categories:(NSArray *)categories
+            categories:(NSSet *)categories
                 radius:(NSNumber *)radius
                  deals:(BOOL)hasDeal
             completion:(void (^)(NSArray *businesses, NSError *error))completion;
