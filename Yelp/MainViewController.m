@@ -96,8 +96,11 @@
     [searchBar setShowsCancelButton:NO animated:YES];
 }
 
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
-{
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    if (![self.searchText isEqualToString:@""] && [searchBar.text isEqualToString:@""]) {
+        self.searchText = @"";
+        [self search];
+    }
     [searchBar setShowsCancelButton:YES animated:YES];
 }
 
