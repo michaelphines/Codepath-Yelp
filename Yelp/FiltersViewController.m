@@ -8,12 +8,19 @@
 
 #import "FiltersViewController.h"
 #import "SwitchCell.h"
+#import "DistanceCell.h"
+#import "SortByCell.h"
+#import "YelpClient.h"
 
-@interface FiltersViewController () <UITableViewDelegate, UITableViewDataSource, SwitchCellDelegate>
+@interface FiltersViewController () <UITableViewDelegate, UITableViewDataSource, SwitchCellDelegate, SortByCellDelegate, DistanceCellDelegate>
 
 @property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, strong) NSMutableSet *selectedCategories;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (nonatomic) BOOL deals;
+@property (strong, nonatomic) NSNumber *radius;
+@property (strong, nonatomic) NSNumber *sortMode;
 
 @end
 
@@ -41,7 +48,7 @@
 }
 
 - (void)onApplyTap {
-    [self.delegate filtersViewController:self didUpdateFilters:[self filters]];
+    [self.delegate filtersViewController:self didUpdateFilters:[self filters] sortMode:self.sortMode radius:self.radius deals:self.deals];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -63,31 +70,96 @@
 }
 
 - (void)setUpTableView {
+    [self.tableView registerNib:[UINib nibWithNibName:@"DistanceCell" bundle:nil] forCellReuseIdentifier:@"distanceCell"];
     [self.tableView registerNib:[UINib nibWithNibName:@"SwitchCell" bundle:nil] forCellReuseIdentifier:@"switchCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"SortByCell" bundle:nil] forCellReuseIdentifier:@"sortByCell"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    SwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"switchCell"];
-    cell.titleLabel.text = self.categories[indexPath.row][@"name"];
-    cell.delegate = self;
-    cell.on = [self.selectedCategories containsObject:self.categories[indexPath.row]];
-    return cell;
-}
-
--(void)switchCell:(SwitchCell *)cell didUpdateValue:(BOOL)value {
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    NSDictionary *category = self.categories[indexPath.row];
-    if (value) {
-        [self.selectedCategories addObject:category];
-    } else {
-        [self.selectedCategories removeObject:category];
+    switch (indexPath.section) {
+        case 0: return [self dealSwitchCell];
+        case 1: return [self distanceCell];
+        case 2: return [self sortByCell];
+        case 3: return [self categoryCellForIndex: indexPath.row];
+        default: return nil;
     }
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.categories.count;
+- (SortByCell *)sortByCell {
+    SortByCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"sortByCell"];
+    cell.sortMode = self.sortMode;
+    cell.delegate = self;
+    return cell;
+}
+
+- (void)sortByCell:(SortByCell *)cell didUpdateValue:(NSNumber *)value {
+    self.sortMode = value;
+}
+
+- (DistanceCell *)distanceCell {
+    DistanceCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"distanceCell"];
+    cell.delegate = self;
+    cell.radius = self.radius;
+    return cell;
+}
+
+- (void)distanceCell:(DistanceCell *)cell didUpdateValue:(NSNumber *)value {
+    self.radius = value;
+}
+
+- (SwitchCell *)dealSwitchCell {
+    SwitchCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"switchCell"];
+    cell.titleLabel.text = @"Offering a deal";
+    cell.delegate = self;
+    cell.on = self.deals;
+    return cell;
+}
+
+- (SwitchCell *)categoryCellForIndex:(NSInteger)index {
+    SwitchCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"switchCell"];
+    cell.titleLabel.text = self.categories[index][@"name"];
+    cell.delegate = self;
+    cell.on = [self.selectedCategories containsObject:self.categories[index]];
+    return cell;
+}
+
+- (void)switchCell:(SwitchCell *)cell didUpdateValue:(BOOL)value {
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    if (indexPath.section == 0) {
+        self.deals = value;
+    } else {
+        NSDictionary *category = self.categories[indexPath.row];
+        if (value) {
+            [self.selectedCategories addObject:category];
+        } else {
+            [self.selectedCategories removeObject:category];
+        }
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    switch (section) {
+        case 1: return @"Distance";
+        case 2: return @"Sort By";
+        case 3: return @"Category";
+        default: return @"";
+    }
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 4;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    switch (section) {
+        case 0: return 1;
+        case 1: return 1;
+        case 2: return 1;
+        case 3: return self.categories.count;
+        default: return 0;
+    }
 }
 
 - (void)setUpCategories {

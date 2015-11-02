@@ -15,11 +15,16 @@
 
 @interface MainViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, FiltersViewControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet UITableView *searchResultsTableView;
+
 @property (strong, nonatomic) NSString *searchText;
 @property (strong, nonatomic) NSArray *categoryFilters;
 @property (strong, nonatomic) NSArray *businesses;
-@property (weak, nonatomic) IBOutlet UITableView *searchResultsTableView;
 @property (strong, nonatomic) NSString *nextSearch;
+@property (strong, nonatomic) NSNumber *radius;
+@property (strong, nonatomic) NSNumber *sortMode;
+
+@property BOOL deals;
 @property BOOL searchInProgress;
 @property BOOL searchAgain;
 
@@ -31,6 +36,9 @@
     [super viewDidLoad];
     self.searchText = @"";
     self.categoryFilters = @[];
+    self.radius = nil;
+    self.sortMode = YelpSortModeBestMatched;
+    self.deals = NO;
     [self setUpTable];
     [self setUpNavigation];
     [self search];
@@ -43,9 +51,10 @@
         self.searchInProgress = YES;
         [SVProgressHUD show];
         [YelpBusiness searchWithTerm:self.searchText
-                            sortMode:YelpSortModeBestMatched
+                            sortMode:[self.sortMode integerValue]
                           categories:self.categoryFilters
-                               deals:NO
+                              radius:self.radius
+                               deals:self.deals
                           completion:^(NSArray *businesses, NSError *error) {
                               [SVProgressHUD dismiss];
                               self.businesses = businesses;
@@ -106,8 +115,11 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filters" style:UIBarButtonItemStylePlain target:self action:@selector(onFiltersTap)];
 }
 
-- (void)filtersViewController:(FiltersViewController *)filtersViewController didUpdateFilters:(NSArray *)filters {
+- (void)filtersViewController:(FiltersViewController *)filtersViewController didUpdateFilters:(NSArray *)filters sortMode:(NSNumber *)sortMode radius:(NSNumber *)radius deals:(BOOL)deals{
     self.categoryFilters = filters;
+    self.sortMode = sortMode;
+    self.radius = radius;
+    self.deals = deals;
     [self search];
 }
 

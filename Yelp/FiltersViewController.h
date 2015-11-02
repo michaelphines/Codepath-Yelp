@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YelpClient.h"
 
 @class FiltersViewController;
 
 @protocol FiltersViewControllerDelegate <NSObject>
 
-- (void)filtersViewController:(FiltersViewController *)filtersViewController didUpdateFilters:(NSArray *)filters;
+- (void)filtersViewController:(FiltersViewController *)filtersViewController didUpdateFilters:(NSArray *)filters sortMode:(NSNumber *)sortMode radius:(NSNumber *)radius deals:(BOOL)deals;
+
 @end
 
 @interface FiltersViewController : UIViewController

@@ -49,6 +49,7 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
     return [self searchWithTerm:term
                        sortMode:YelpSortModeBestMatched
                      categories:nil
+                         radius:nil
                           deals:NO
                      completion:completion];
 }
@@ -56,6 +57,7 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 - (AFHTTPRequestOperation *)searchWithTerm:(NSString *)term
                                   sortMode:(YelpSortMode)sortMode
                                 categories:(NSArray *)categories
+                                    radius:(NSNumber *)radius
                                      deals:(BOOL)hasDeal
                                 completion:(void (^)(NSArray *businesses, NSError *error))completion {
     
@@ -67,6 +69,10 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
     
     if (categories && categories.count > 0) {
         parameters[@"category_filter"] = [categories componentsJoinedByString:@","];
+    }
+    
+    if (radius) {
+        parameters[@"radius_filter"] = radius;
     }
     
     if (hasDeal) {
