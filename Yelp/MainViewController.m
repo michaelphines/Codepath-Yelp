@@ -36,7 +36,7 @@
     [super viewDidLoad];
     self.searchText = @"";
     self.categoryFilters = [NSSet set];
-    self.radius = nil;
+    self.radius = 0;
     self.sortMode = YelpSortModeBestMatched;
     self.deals = NO;
     [self setUpTable];

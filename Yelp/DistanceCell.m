@@ -20,7 +20,7 @@
 
 - (void)awakeFromNib {
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    self.distancesInMeters = @[[NSNull null], @482.8f, @1609.3, @8046.7, @32186.9];
+    self.distancesInMeters = @[@0.0f, @482.8f, @1609.3, @8046.7, @32186.9];
 }
 
 - (void)setRadius:(NSNumber *)radius {

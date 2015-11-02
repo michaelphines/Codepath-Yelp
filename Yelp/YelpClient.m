@@ -71,9 +71,7 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
         parameters[@"category_filter"] = [categories componentsJoinedByString:@","];
     }
     
-    if (radius) {
-        parameters[@"radius_filter"] = radius;
-    }
+    parameters[@"radius_filter"] = radius;
     
     if (hasDeal) {
         parameters[@"deals_filter"] = [NSNumber numberWithBool:hasDeal];
