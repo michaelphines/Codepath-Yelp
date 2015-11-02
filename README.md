@@ -38,7 +38,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://imgur.com/1BWh8uI.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/michaelphines/Codepath-Yelp/blob/master/demo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
